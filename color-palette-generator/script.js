@@ -1,12 +1,10 @@
-// DOM Elements
 const hexDisplay = document.getElementById('hex-value');
 const rSlider = document.getElementById('r-slider');
 const gSlider = document.getElementById('g-slider');
 const bSlider = document.getElementById('b-slider');
 const paletteContainer = document.getElementById('palette-scale');
-const bgSwatches = document.querySelectorAll('.bg-swatch');
 
-// Advanced Controls Elements
+
 const controls = {
     darkAmount: document.getElementById('ctrl-dark-amount'),
     darknessScale: document.getElementById('ctrl-darkness-scale'),
@@ -35,73 +33,96 @@ const btnCopyColors = document.getElementById('btn-copy-colors');
 const btnRandomizeAll = document.getElementById('btn-randomize-all');
 const btnRandomizeColor = document.getElementById('btn-randomize-color');
 
-// State
 let state = {
     r: 29,
     g: 154,
     b: 108,
     settings: {
         darkAmount: 5,
-        darknessScale: 10,  // % of darkness
+        darknessScale: 10,
         darkHue: 0,
         darkSat: 0,
         lightAmount: 6,
-        lightnessScale: 95, // % of lightness
+        lightnessScale: 95,
         lightHue: 0,
         lightSat: 0
     }
 };
 
-// --- Initialization ---
 function init() {
+    loadState();
     updateStateFromDOM();
     addEventListeners();
     render();
 }
 
-// --- Event Listeners ---
+function saveState() {
+    const data = {
+        state: state
+    };
+    localStorage.setItem('colorPaletteGen_state', JSON.stringify(data));
+}
+
+function loadState() {
+    const data = localStorage.getItem('colorPaletteGen_state');
+    if (data) {
+        try {
+            const parsed = JSON.parse(data);
+            if (parsed.state) {
+                state = parsed.state;
+                rSlider.value = state.r;
+                gSlider.value = state.g;
+                bSlider.value = state.b;
+
+                Object.keys(controls).forEach(key => {
+                    if (controls[key]) {
+                        controls[key].value = state.settings[key];
+                        updateDisplayValue(key);
+                    }
+                });
+            }
+        } catch (e) {
+            console.error("Failed to load state", e);
+        }
+    }
+}
+
 function addEventListeners() {
-    // RGB Sliders
     [rSlider, gSlider, bSlider].forEach(slider => {
         slider.addEventListener('input', () => {
             state.r = parseInt(rSlider.value);
             state.g = parseInt(gSlider.value);
             state.b = parseInt(bSlider.value);
             render();
+            saveState();
         });
     });
 
-    // Advanced Controls
     Object.keys(controls).forEach(key => {
         controls[key].addEventListener('input', (e) => {
             state.settings[key] = parseInt(e.target.value);
             updateDisplayValue(key);
             render();
-        });
-    });
-
-    // Background Swatches
-    bgSwatches.forEach(swatch => {
-        swatch.addEventListener('click', () => {
-            document.body.style.backgroundColor = swatch.dataset.bg;
-            // Adjust text color based on background brightness for visibility
-            const rgb = hexToRgb(swatch.dataset.bg);
-            const luminance = (0.299 * rgb.r + 0.587 * rgb.g + 0.114 * rgb.b) / 255;
-            document.documentElement.style.setProperty('--text-color', luminance > 0.5 ? '#111111' : '#ffffff');
-            document.documentElement.style.setProperty('--slider-track', luminance > 0.5 ? '#e0e0e0' : '#444444');
-            document.documentElement.style.setProperty('--slider-thumb', luminance > 0.5 ? '#111111' : '#ffffff');
-            document.documentElement.style.setProperty('--border-color', luminance > 0.5 ? '#e0e0e0' : '#444444');
+            saveState();
         });
     });
 
     // Buttons
-    btnRandomizeColor.addEventListener('click', randomizeColor);
-    btnRandomizeAll.addEventListener('click', randomizeAll);
+    btnRandomizeColor.addEventListener('click', () => {
+        randomizeColor();
+        saveState();
+    });
+    btnRandomizeAll.addEventListener('click', () => {
+        randomizeAll();
+        saveState();
+    });
     btnCopyColors.addEventListener('click', copyColorsToClipboard);
     btnCopySvg.addEventListener('click', copySvgToClipboard);
 }
 
 function updateStateFromDOM() {
+    // If state loaded, sliders are already set. 
+    // Just ensure state object matches DOM in case of defaults.
     state.r = parseInt(rSlider.value);
     state.g = parseInt(gSlider.value);
     state.b = parseInt(bSlider.value);
@@ -226,16 +247,16 @@ function randomizeAll() {
     state.settings.lightnessScale = Math.floor(Math.random() * 80) + 10;
     state.settings.darkHue = Math.floor(Math.random() * 60) - 30;
     state.settings.lightHue = Math.floor(Math.random() * 60) - 30;
+    state.settings.darkSat = Math.floor(Math.random() * 40) - 20;
+    state.settings.lightSat = Math.floor(Math.random() * 40) - 20;
 
-    // Update DOM
-    controls.darkAmount.value = state.settings.darkAmount;
-    controls.lightAmount.value = state.settings.lightAmount;
-    controls.darknessScale.value = state.settings.darknessScale;
-    controls.lightnessScale.value = state.settings.lightnessScale;
-    controls.darkHue.value = state.settings.darkHue;
-    controls.lightHue.value = state.settings.lightHue;
-
-    Object.keys(controls).forEach(key => updateDisplayValue(key));
+    // Update DOM inputs and display values
+    Object.keys(controls).forEach(key => {
+        if (controls[key]) {
+            controls[key].value = state.settings[key];
+            updateDisplayValue(key);
+        }
+    });
 
     render();
 }
@@ -268,7 +289,7 @@ function copySvgToClipboard() {
     });
 }
 
-// --- Utils ---
+
 
 function rgbToHex(r, g, b) {
     return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1).toUpperCase();
@@ -331,5 +352,5 @@ function hslToHex(h, s, l) {
     return rgbToHex(r, g, b);
 }
 
-// Start
+
 init();

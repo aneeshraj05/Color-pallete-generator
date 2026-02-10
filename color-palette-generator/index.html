@@ -8,135 +8,172 @@
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 
 <body>
 
-    <main class="container">
+    <main class="app-container">
 
-        <!-- Top Section -->
-        <section class="top-section">
-            <div class="color-controls">
-                <div class="hex-display">
-                    <span id="hex-value">#1D9A6C</span>
-                </div>
-                <div class="rgb-sliders">
-                    <div class="slider-group">
-                        <label for="r-slider">R</label>
-                        <input type="range" id="r-slider" min="0" max="255" value="29">
+        <!-- Header / Top Bar -->
+        <header class="app-header">
+            <div class="logo">PaletteGen</div>
+            <div class="actions">
+                <button id="btn-randomize-all" class="btn btn-secondary">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M23 4v6h-6" />
+                        <path d="M1 20v-6h6" />
+                        <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" />
+                        <path d="M3.51 9a9 9 0 1 1 2.12 9.36L1 14" />
+                    </svg>
+                    Randomize all
+                </button>
+                <div class="divider-vertical"></div>
+                <button id="btn-copy-colors" class="btn btn-primary">Copy HEX</button>
+                <button id="btn-copy-svg" class="btn btn-secondary">Copy SVG</button>
+            </div>
+        </header>
+
+        <div class="main-grid">
+
+            <!-- Left Column: Controls -->
+            <div class="left-column">
+
+                <!-- Primary Color Card -->
+                <section class="card control-card">
+                    <div class="card-header">
+                        <h3>Base Color</h3>
+                        <button id="btn-randomize-color" class="btn-icon" aria-label="Randomize base color"
+                            title="Randomize base color">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path
+                                    d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3L22 12M22 12.5a10 10 0 0 1-18.8 4.2L2 12" />
+                            </svg>
+                        </button>
                     </div>
-                    <div class="slider-group">
-                        <label for="g-slider">G</label>
-                        <input type="range" id="g-slider" min="0" max="255" value="154">
+
+                    <div class="hex-display">
+                        <span id="hex-value">#1D9A6C</span>
                     </div>
-                    <div class="slider-group">
-                        <label for="b-slider">B</label>
-                        <input type="range" id="b-slider" min="0" max="255" value="108">
+
+                    <div class="rgb-sliders">
+                        <div class="slider-group">
+                            <label for="r-slider">R</label>
+                            <input type="range" id="r-slider" min="0" max="255" value="29">
+                            <span class="value-display" id="val-r">29</span>
+                        </div>
+                        <div class="slider-group">
+                            <label for="g-slider">G</label>
+                            <input type="range" id="g-slider" min="0" max="255" value="154">
+                            <span class="value-display" id="val-g">154</span>
+                        </div>
+                        <div class="slider-group">
+                            <label for="b-slider">B</label>
+                            <input type="range" id="b-slider" min="0" max="255" value="108">
+                            <span class="value-display" id="val-b">108</span>
+                        </div>
                     </div>
-                </div>
+                </section>
+
+                <!-- Background Selector Removed -->
+
             </div>
 
-            <div class="background-selector">
-                <h3>Background</h3>
-                <div class="bg-grid">
-                    <!-- Dark swatches -->
-                    <button class="bg-swatch" data-bg="#000000" style="background-color: #000000;"></button>
-                    <button class="bg-swatch" data-bg="#1a1a1a" style="background-color: #1a1a1a;"></button>
-                    <button class="bg-swatch" data-bg="#333333" style="background-color: #333333;"></button>
-                    <button class="bg-swatch" data-bg="#4d4d4d" style="background-color: #4d4d4d;"></button>
-                    <!-- Light swatches -->
-                    <button class="bg-swatch" data-bg="#ffffff" style="background-color: #ffffff;"></button>
-                    <button class="bg-swatch" data-bg="#f2f2f2" style="background-color: #f2f2f2;"></button>
-                    <button class="bg-swatch" data-bg="#e6e6e6" style="background-color: #e6e6e6;"></button>
-                    <button class="bg-swatch" data-bg="#cccccc" style="background-color: #cccccc;"></button>
-                </div>
+            <!-- Right Column: Palette & Advanced -->
+            <div class="right-column">
+
+                <!-- Palette Scale -->
+                <section class="palette-container">
+                    <div id="palette-scale" class="palette-scale"></div>
+                </section>
+
+                <!-- Advanced Controls -->
+                <section class="card advanced-card">
+                    <div class="card-header">
+                        <h3>Advanced Configuration</h3>
+                    </div>
+
+                    <div class="advanced-grid">
+                        <!-- Dark Settings -->
+                        <div class="setting-column">
+                            <h4>Dark Shades</h4>
+                            <div class="control-group">
+                                <div class="control-header">
+                                    <label>Amount</label>
+                                    <span id="val-dark-amount">5</span>
+                                </div>
+                                <input type="range" id="ctrl-dark-amount" min="0" max="10" value="5">
+                            </div>
+
+                            <div class="control-group">
+                                <div class="control-header">
+                                    <label>Darkness</label>
+                                    <span id="val-darkness-scale">10%</span>
+                                </div>
+                                <input type="range" id="ctrl-darkness-scale" min="0" max="100" value="10">
+                            </div>
+
+                            <div class="control-group">
+                                <div class="control-header">
+                                    <label>Hue Shift</label>
+                                    <span id="val-dark-hue">0°</span>
+                                </div>
+                                <input type="range" id="ctrl-dark-hue" min="-60" max="60" value="0">
+                                <!-- Reduced range for usability -->
+                            </div>
+
+                            <div class="control-group">
+                                <div class="control-header">
+                                    <label>Saturation</label>
+                                    <span id="val-dark-sat">0%</span>
+                                </div>
+                                <input type="range" id="ctrl-dark-sat" min="-100" max="100" value="0">
+                            </div>
+                        </div>
+
+                        <div class="divider-vertical-long"></div>
+
+                        <!-- Light Settings -->
+                        <div class="setting-column">
+                            <h4>Light Shades</h4>
+                            <div class="control-group">
+                                <div class="control-header">
+                                    <label>Amount</label>
+                                    <span id="val-light-amount">6</span>
+                                </div>
+                                <input type="range" id="ctrl-light-amount" min="0" max="10" value="6">
+                            </div>
+
+                            <div class="control-group">
+                                <div class="control-header">
+                                    <label>Lightness</label>
+                                    <span id="val-lightness-scale">95%</span>
+                                </div>
+                                <input type="range" id="ctrl-lightness-scale" min="0" max="100" value="95">
+                            </div>
+
+                            <div class="control-group">
+                                <div class="control-header">
+                                    <label>Hue Shift</label>
+                                    <span id="val-light-hue">0°</span>
+                                </div>
+                                <input type="range" id="ctrl-light-hue" min="-60" max="60" value="0">
+                            </div>
+
+                            <div class="control-group">
+                                <div class="control-header">
+                                    <label>Saturation</label>
+                                    <span id="val-light-sat">0%</span>
+                                </div>
+                                <input type="range" id="ctrl-light-sat" min="-100" max="100" value="0">
+                            </div>
+                        </div>
+                    </div>
+                </section>
             </div>
-        </section>
 
-        <!-- Action Buttons -->
-        <section class="actions">
-            <button id="btn-copy-svg" class="btn">Copy SVG</button>
-            <button id="btn-copy-colors" class="btn">Copy colors</button>
-            <button id="btn-randomize-all" class="btn">Randomize all</button>
-            <button id="btn-randomize-color" class="btn">Randomize color</button>
-        </section>
-
-        <!-- Middle Section: Color Scale -->
-        <section class="scale-section">
-            <div id="palette-scale" class="palette-scale">
-                <!-- Color swatches will be injected here by JS -->
-            </div>
-        </section>
-
-        <!-- Bottom Section: Advanced Controls -->
-        <section class="advanced-controls">
-            <div class="control-group">
-                <div class="control-header">
-                    <label>Dark colors amount</label>
-                    <span id="val-dark-amount">0</span>
-                </div>
-                <input type="range" id="ctrl-dark-amount" min="0" max="10" value="5">
-            </div>
-
-            <div class="control-group">
-                <div class="control-header">
-                    <label>Darkness %</label>
-                    <span id="val-darkness-scale">0%</span>
-                </div>
-                <input type="range" id="ctrl-darkness-scale" min="0" max="100" value="10">
-            </div>
-
-            <div class="control-group">
-                <div class="control-header">
-                    <label>Dark colors hue angle</label>
-                    <span id="val-dark-hue">0°</span>
-                </div>
-                <input type="range" id="ctrl-dark-hue" min="-360" max="360" value="0">
-            </div>
-
-            <div class="control-group">
-                <div class="control-header">
-                    <label>Dark colors saturation</label>
-                    <span id="val-dark-sat">0%</span>
-                </div>
-                <input type="range" id="ctrl-dark-sat" min="-100" max="100" value="0">
-            </div>
-
-            <div class="separator"></div>
-
-            <div class="control-group">
-                <div class="control-header">
-                    <label>Light colors amount</label>
-                    <span id="val-light-amount">0</span>
-                </div>
-                <input type="range" id="ctrl-light-amount" min="0" max="10" value="6">
-            </div>
-
-            <div class="control-group">
-                <div class="control-header">
-                    <label>Lightness %</label>
-                    <span id="val-lightness-scale">0%</span>
-                </div>
-                <input type="range" id="ctrl-lightness-scale" min="0" max="100" value="95">
-            </div>
-
-            <div class="control-group">
-                <div class="control-header">
-                    <label>Light colors hue angle</label>
-                    <span id="val-light-hue">0°</span>
-                </div>
-                <input type="range" id="ctrl-light-hue" min="-360" max="360" value="0">
-            </div>
-
-            <div class="control-group">
-                <div class="control-header">
-                    <label>Light colors saturation</label>
-                    <span id="val-light-sat">0%</span>
-                </div>
-                <input type="range" id="ctrl-light-sat" min="-100" max="100" value="0">
-            </div>
-        </section>
+        </div>
 
     </main>
 
