@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Color Palette Generator</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <main class="container">
+
+        <!-- Top Section -->
+        <section class="top-section">
+            <div class="color-controls">
+                <div class="hex-display">
+                    <span id="hex-value">#1D9A6C</span>
+                </div>
+                <div class="rgb-sliders">
+                    <div class="slider-group">
+                        <label for="r-slider">R</label>
+                        <input type="range" id="r-slider" min="0" max="255" value="29">
+                    </div>
+                    <div class="slider-group">
+                        <label for="g-slider">G</label>
+                        <input type="range" id="g-slider" min="0" max="255" value="154">
+                    </div>
+                    <div class="slider-group">
+                        <label for="b-slider">B</label>
+                        <input type="range" id="b-slider" min="0" max="255" value="108">
+                    </div>
+                </div>
+            </div>
+
+            <div class="background-selector">
+                <h3>Background</h3>
+                <div class="bg-grid">
+                    <!-- Dark swatches -->
+                    <button class="bg-swatch" data-bg="#000000" style="background-color: #000000;"></button>
+                    <button class="bg-swatch" data-bg="#1a1a1a" style="background-color: #1a1a1a;"></button>
+                    <button class="bg-swatch" data-bg="#333333" style="background-color: #333333;"></button>
+                    <button class="bg-swatch" data-bg="#4d4d4d" style="background-color: #4d4d4d;"></button>
+                    <!-- Light swatches -->
+                    <button class="bg-swatch" data-bg="#ffffff" style="background-color: #ffffff;"></button>
+                    <button class="bg-swatch" data-bg="#f2f2f2" style="background-color: #f2f2f2;"></button>
+                    <button class="bg-swatch" data-bg="#e6e6e6" style="background-color: #e6e6e6;"></button>
+                    <button class="bg-swatch" data-bg="#cccccc" style="background-color: #cccccc;"></button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Action Buttons -->
+        <section class="actions">
+            <button id="btn-copy-svg" class="btn">Copy SVG</button>
+            <button id="btn-copy-colors" class="btn">Copy colors</button>
+            <button id="btn-randomize-all" class="btn">Randomize all</button>
+            <button id="btn-randomize-color" class="btn">Randomize color</button>
+        </section>
+
+        <!-- Middle Section: Color Scale -->
+        <section class="scale-section">
+            <div id="palette-scale" class="palette-scale">
+                <!-- Color swatches will be injected here by JS -->
+            </div>
+        </section>
+
+        <!-- Bottom Section: Advanced Controls -->
+        <section class="advanced-controls">
+            <div class="control-group">
+                <div class="control-header">
+                    <label>Dark colors amount</label>
+                    <span id="val-dark-amount">0</span>
+                </div>
+                <input type="range" id="ctrl-dark-amount" min="0" max="10" value="5">
+            </div>
+
+            <div class="control-group">
+                <div class="control-header">
+                    <label>Darkness %</label>
+                    <span id="val-darkness-scale">0%</span>
+                </div>
+                <input type="range" id="ctrl-darkness-scale" min="0" max="100" value="10">
+            </div>
+
+            <div class="control-group">
+                <div class="control-header">
+                    <label>Dark colors hue angle</label>
+                    <span id="val-dark-hue">0°</span>
+                </div>
+                <input type="range" id="ctrl-dark-hue" min="-360" max="360" value="0">
+            </div>
+
+            <div class="control-group">
+                <div class="control-header">
+                    <label>Dark colors saturation</label>
+                    <span id="val-dark-sat">0%</span>
+                </div>
+                <input type="range" id="ctrl-dark-sat" min="-100" max="100" value="0">
+            </div>
+
+            <div class="separator"></div>
+
+            <div class="control-group">
+                <div class="control-header">
+                    <label>Light colors amount</label>
+                    <span id="val-light-amount">0</span>
+                </div>
+                <input type="range" id="ctrl-light-amount" min="0" max="10" value="6">
+            </div>
+
+            <div class="control-group">
+                <div class="control-header">
+                    <label>Lightness %</label>
+                    <span id="val-lightness-scale">0%</span>
+                </div>
+                <input type="range" id="ctrl-lightness-scale" min="0" max="100" value="95">
+            </div>
+
+            <div class="control-group">
+                <div class="control-header">
+                    <label>Light colors hue angle</label>
+                    <span id="val-light-hue">0°</span>
+                </div>
+                <input type="range" id="ctrl-light-hue" min="-360" max="360" value="0">
+            </div>
+
+            <div class="control-group">
+                <div class="control-header">
+                    <label>Light colors saturation</label>
+                    <span id="val-light-sat">0%</span>
+                </div>
+                <input type="range" id="ctrl-light-sat" min="-100" max="100" value="0">
+            </div>
+        </section>
+
+    </main>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
